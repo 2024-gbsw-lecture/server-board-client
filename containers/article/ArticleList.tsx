@@ -19,6 +19,7 @@ const ArticleList = ({ articles }: ArticleListProps) => {
           </Link>
         </div>
       ))}
+      {articles.length == 0 ? "게시물이 없습니다." : ""}
     </div>
   );
 };

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { customAxios } from '@/utils/axios';
-import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { sha512 } from '../../utils/sha512';
 
 export interface ArticleEditorOnSubmitProps {
     title: string, content: string, author: string
@@ -48,7 +47,7 @@ const ArticleEditor: React.FC<ArticleEditorProps> = (props: ArticleEditorProps) 
       return;
     }
 
-    props.onSubmit(Object.assign({title, content, author}, enablePassword ? {password} : {}));
+    props.onSubmit(Object.assign({title, content, author}, enablePassword ? {password: sha512(password)} : {}));
   };
 
   return (
