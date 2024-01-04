@@ -41,7 +41,7 @@ const CommentEditor: React.FC<CommentEditorProps> = (props: CommentEditorProps) 
           />
       </div>
       <div>
-        <Button onClick={() => props.onSubmit({content, author, password: sha512(password)})}>등록</Button>
+        <Button onClick={() => props.onSubmit({content, author, password: sha512(password)})}>{props.submitButtonText ?? '등록'}</Button>
       </div>
     </div>
 

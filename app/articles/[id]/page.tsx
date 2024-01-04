@@ -10,9 +10,11 @@ import { customAxios, fetcher } from '@/utils/axios';
 import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { sha512 } from '../../../utils/sha512';
+import { Comment } from '@/types/Article';
 
 export default function ArticlePage({ params }: { params: { id: number } }) {
   const { data: article, error } = useSWR<Article>(`/articles/${params.id}`, fetcher);
+  const { data: comments, error: commentsFetchError, mutate: mutateComments } = useSWR<Comment[]>(`/articles/${params.id}/comments`, fetcher);
   const router = useRouter();
   const [enablePassword] = useLocalStorage('enable_password', false);
   const [enableComment] = useLocalStorage('enable_comment', false);
@@ -40,17 +42,48 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
 
   const handleCommentCreateButtonClicked = async (props: CommentEditorOnSubmitProps) => {
     try {
-      const response = await customAxios.post(`/articles/${params.id}/comments`, {
-        data: props
-      });
+      const response = await customAxios.post<Comment>(`/articles/${params.id}/comments`, props);
       
       if (response.status === 200) {
+        mutateComments([...(comments ?? []), response.data])
       } else {
         alert('댓글 등록 실패: ' + response.status);
       }
     } catch (error) {
       console.error('댓글 등록 중 오류 발생', error);
       alert('댓글 등록 중 오류가 발생했습니다.');
+    }
+  }
+
+  const handleCommentModify = async (id: number, props: CommentEditorOnSubmitProps) => {
+    try {
+      const response = await customAxios.put<Comment>(`/articles/comments/${id}`, props);
+      
+      if (response.status === 200) {
+        mutateComments();
+      } else {
+        alert('댓글 수정 실패: ' + response.status);
+      }
+    } catch (error) {
+      console.error('댓글 수정 중 오류 발생', error);
+      alert('댓글 수정 중 오류가 발생했습니다.');
+    }
+  }
+
+  const handleCommentDelete = async (id: number, password: string) => {
+    try {
+      const response = await customAxios.delete<Comment>(`/articles/comments/${id}`, {
+        data: { password }
+      });
+      
+      if (response.status === 200) {
+        mutateComments();
+      } else {
+        alert('댓글 삭제 실패: ' + response.status);
+      }
+    } catch (error) {
+      console.error('댓글 삭제 중 오류 발생', error);
+      alert('댓글 삭제 중 오류가 발생했습니다.');
     }
   }
 
@@ -65,7 +98,11 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
         <div className="w-full border-b"></div>
         <div></div>
         <div>
-          <CommentList comments={article.comments ?? []}/>
+          <CommentList
+            comments={comments ?? []}
+            onModify={handleCommentModify}
+            onDelete={handleCommentDelete}
+            />
         </div>
         <div className="w-full border-b"></div>
         <div>
