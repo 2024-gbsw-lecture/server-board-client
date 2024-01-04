@@ -38,7 +38,7 @@ const CommentList = ({ comments, onModify, onDelete }: CommentListProps) => {
             setEditMode(comment.id)
           }}>수정</u>
           <u className="text-gray-700 text-sm text-g cursor-pointer" onClick={() => {
-            onDelete(comment.id, sha512(prompt('비밀번호를 입력하세요.')))
+            onDelete(comment.id, sha512(prompt('비밀번호를 입력하세요.') ?? ''))
           }}>삭제</u>
         </div>
       </div>
