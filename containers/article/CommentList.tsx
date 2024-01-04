@@ -31,6 +31,7 @@ const CommentList = ({ comments, onModify, onDelete }: CommentListProps) => {
         <div className={`flex-1 ${editMode != comment.id ? 'hidden': ''}`}>
           <CommentEditor content={comment.content} author={comment.author} submitButtonText="수정" onSubmit={(data) => {
             onModify(comment.id, data)
+            setEditMode(undefined);
           }}/>
         </div>
         <div className={`flex gap-2 ${editMode == comment.id ? 'hidden': ''}`}>
