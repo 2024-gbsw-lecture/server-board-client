@@ -66,7 +66,7 @@ function TreePage() {
             </Button>
           </Link>
           
-          <Pagnation page={1} totalPage={5}/>
+          <Pagnation page={1} totalPage={5} onNextButtonClicked={() => {}} onPreviousButtonClicked={() => {}}/>
         </div>
         <div className="w-full h-[667px] absolute -z-10 top-0">
           <img
