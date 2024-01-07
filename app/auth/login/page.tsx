@@ -32,13 +32,9 @@ const LoginPage = () => {
     try {
       const response = await customAxios.post('/auth/login', { id, password: sha512(password) });
             
-      if (response.status === 200) {
-        const token = response.data.token
-        setToken(token);
-        router.push(redirectTo);
-      } else {
-        alert('로그인 실패: ' + (response.data.message ?? response.status));
-      }
+      const token = response.data.token
+      setToken(token);
+      router.push(redirectTo);
     } catch (error) {
       console.error('로그인 중 오류 발생', error);
       const response = (error as AxiosError<any>).response;

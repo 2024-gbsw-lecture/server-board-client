@@ -18,12 +18,8 @@ const CreateArticle: React.FC = () => {
         } : {}
       });
       
-      if (response.status === 200) {
-        alert('게시물이 생성되었습니다.');
-        router.push('/articles')
-      } else {
-        alert('게시물 생성 실패: '+ (response.data.message ?? response.status));
-      }
+      alert('게시물이 생성되었습니다.');
+      router.push('/articles')
     } catch (error) {
       console.error('게시물 생성 중 오류 발생', error);
       alert('게시물 생성 중 오류가 발생했습니다.');

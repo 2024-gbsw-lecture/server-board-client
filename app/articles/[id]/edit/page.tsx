@@ -31,12 +31,8 @@ const EditArticle = ({ params }: { params: { id: number } }) => {
         } : {}
       });
       
-      if (response.status === 200) {
-        alert('게시물이 수정되었습니다.');
-        router.push(`/articles/${params.id}`);
-      } else {
-        alert('게시물 수정 실패: '+ (response.data.message ?? response.status));
-      }
+      alert('게시물이 수정되었습니다.');
+      router.push(`/articles/${params.id}`);
     } catch (error) {
       console.error('게시물 수정 중 오류 발생', error);
       alert('게시물 수정 중 오류가 발생했습니다.');
