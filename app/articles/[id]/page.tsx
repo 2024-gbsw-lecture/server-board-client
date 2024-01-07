@@ -32,7 +32,7 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
         alert('게시물이 삭제되었습니다.');
         router.push('/articles');
       } else {
-        alert('게시물 삭제 실패: ' + response.status);
+        alert('게시물 삭제 실패: '+ (response.data.message ?? response.status));
       }
     } catch (error) {
       console.error('게시물 삭제 중 오류 발생', error);
@@ -47,7 +47,7 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
       if (response.status === 200) {
         mutateComments([...(comments ?? []), response.data])
       } else {
-        alert('댓글 등록 실패: ' + response.status);
+        alert('댓글 등록 실패: '+ (response.data.message ?? response.status));
       }
     } catch (error) {
       console.error('댓글 등록 중 오류 발생', error);
@@ -62,7 +62,7 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
       if (response.status === 200) {
         mutateComments();
       } else {
-        alert('댓글 수정 실패: ' + response.status);
+        alert('댓글 수정 실패: '+ (response.data.message ?? response.status));
       }
     } catch (error) {
       console.error('댓글 수정 중 오류 발생', error);
@@ -79,7 +79,7 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
       if (response.status === 200) {
         mutateComments();
       } else {
-        alert('댓글 삭제 실패: ' + response.status);
+        alert('댓글 삭제 실패: '+ (response.data.message ?? response.status));
       }
     } catch (error) {
       console.error('댓글 삭제 중 오류 발생', error);

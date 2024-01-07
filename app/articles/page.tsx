@@ -6,15 +6,11 @@ import { Article } from '@/types/Article';
 import { customAxios, fetcher } from '@/utils/axios';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 
 export default function ArticlesPage() {
   // useSWR을 사용하여 API에서 데이터를 가져옵니다.
   const { data: articles, error } = useSWR<Article[]>(`/articles`, fetcher);
-  const [enablePassword, setEnablePassword] = useLocalStorage('enable_password', false)
-  const [enableComment, setEnableComment] = useLocalStorage('enable_comment', false)
 
   if (error) return <div>데이터를 불러오는데 실패했습니다.</div>;
   if (!articles) return <div>로딩 중...</div>;
@@ -29,13 +25,6 @@ export default function ArticlesPage() {
         </Link>
       </div>
       <ArticleList articles={articles}/>
-      <div className="flex flex-col gap-5">
-        <div className="border-b w-full"></div>
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2"><Switch className="border" checked={enablePassword} onCheckedChange={() => setEnablePassword(!enablePassword)}/> 비밀번호 기능</div>
-          <div className="flex items-center gap-2"><Switch className="border" checked={enableComment} onCheckedChange={() => setEnableComment(!enableComment)}/> 댓글 기능</div>
-        </div>
-      </div>
     </div>
   )
 }
