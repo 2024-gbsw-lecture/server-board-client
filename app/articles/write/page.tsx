@@ -12,6 +12,7 @@ const CreateArticle: React.FC = () => {
 
   const handleSubmit = async (data: ArticleEditorOnSubmitProps) => {
     try {
+      console.log(token)
       const response = await customAxios.post('/articles', data, {
         headers: !!token ? {
           'Authorization': `Bearer ${token}`

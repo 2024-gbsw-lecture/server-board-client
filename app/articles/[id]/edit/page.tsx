@@ -15,6 +15,8 @@ const EditArticle = ({ params }: { params: { id: number } }) => {
 
   useEffect(() => {
     if (!isArticleLoading && !error && article?.user?.id != subject) {
+      console.log(subject);
+      console.log(article)
       alert('본인의 글또는 익명글만 수정가능합니다.');
       router.back();
     }

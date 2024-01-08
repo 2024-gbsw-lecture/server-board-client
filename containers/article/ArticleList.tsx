@@ -15,7 +15,7 @@ const ArticleList = ({ articles }: ArticleListProps) => {
         <div className="border rounded-md px-4 py-2" key={article.id}>
           <Link href={`/articles/${article.id}`}>
             <h2 className="text-lg mb-1">{article.title}</h2>
-            <div className="text-sm">{article.author} · {dayjs(article.createdAt).format("YYYY년 MM월 DD일")}</div>
+            <div className="text-sm">{article.author != '' ? article.author : article.user?.name} · {dayjs(article.createdAt).format("YYYY년 MM월 DD일")}</div>
           </Link>
         </div>
       ))}

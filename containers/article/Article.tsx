@@ -12,7 +12,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col gap-1">
-        <p>{article.author}</p>
+        <p>{article.author != '' ? article.author : article.user?.name}</p>
         <h1 className="text-2xl">{article.title}</h1>
         <p>
           {dayjs(article.createdAt).format("YYYY년 MM월 DD일")}

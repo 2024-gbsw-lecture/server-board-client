@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import { sha512 } from '../../../utils/sha512';
 import { Comment } from '@/types/Article';
+import useToken from '@/hooks/useToken';
 
 export default function ArticlePage({ params }: { params: { id: number } }) {
   const { data: article, error } = useSWR<Article>(`/articles/${params.id}`, fetcher);
@@ -18,14 +19,29 @@ export default function ArticlePage({ params }: { params: { id: number } }) {
   const router = useRouter();
   const [enablePassword] = useLocalStorage('enable_password', false);
   const [enableComment] = useLocalStorage('enable_comment', false);
+  const {token, subject} = useToken();
+  const isAnonymous = !(article?.user);
 
   if (error) return <div>데이터를 불러오는데 실패했습니다.</div>;
   if (!article) return <div>로딩 중...</div>;
 
   const handleDeleteButtonClicked = async () => {
     try {
+      if (!isAnonymous && !!token && subject != article.user?.id) {
+        alert('본인의 글만 삭제 가능합니다.');
+        return;
+      }
+
+      const body = { password: '' }
+      if (enablePassword && isAnonymous) {
+        body['password'] = sha512(prompt('비밀번호를 입력하세요.') ?? "")
+      }
+
       const response = await customAxios.delete(`/articles/${params.id}`, {
-        data: enablePassword ? (() => {return { 'password': sha512(prompt('비밀번호를 입력하세요.') ?? "") }})() : undefined
+        data: enablePassword && isAnonymous ? body : undefined,
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       
       alert('게시물이 삭제되었습니다.');
