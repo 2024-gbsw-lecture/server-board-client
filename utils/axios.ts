@@ -1,7 +1,7 @@
 import axios, { Axios } from "axios";
 
 
-const apiServer = 'http://localhost:8080';
+const apiServer = 'https://kdy.psvm.kr';
 
 export const customAxios = axios.create({
     baseURL: apiServer
